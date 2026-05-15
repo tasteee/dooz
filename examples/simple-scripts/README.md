@@ -2,7 +2,7 @@
 
 The simplest possible dooz setup: a single `dooz.yaml` with no extension file.
 
-Every command is a short alias for a longer `npm` or tool invocation. No resolvers, no validators, no captures — just clean pattern-to-command mappings.
+Every command is a short alias for a longer `npm` or tool invocation. No resolvers, no validators, no named captures — just clean pattern-to-command mappings.
 
 ---
 

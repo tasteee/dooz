@@ -33,7 +33,7 @@ commands:
 
   - description: Print extra args joined with a separator
     input: flags <name> [...rest]
-    output: echo "{{name}} -> {{rest | join(' | ')}}"
+    output: echo {{name}} -> {{rest | join(' | ')}}
 
   - description: Print extra args as a JSON array
     input: json [...rest]
@@ -43,11 +43,10 @@ commands:
   - description: Deploy a service to an environment
     input: deploy <environment> <service>
     output: ./scripts/deploy.sh {{environment}} {{service | lower}}
-    uses: [environmentInfo]
     validates: [environmentExists, serviceExists]
 
   - description: Print deployment metadata for an environment
     input: info <environment>
-    output: echo "Region{{':'}} {{region}}, Cluster{{':'}} {{cluster}}"
+    output: echo Region: {{region}} Cluster: {{cluster}}
     uses: [environmentInfo]
     validates: [environmentExists]

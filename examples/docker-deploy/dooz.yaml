@@ -1,15 +1,15 @@
 commands:
-  - description: Build a Docker image for a service
-    input: build <service>
-    output: docker build -t {{service | lower}} .
+  - description: Build a Docker image for a service, with optional extra flags
+    input: build <service> [...rest]
+    output: docker build -t {{service | lower}} . {{rest}}
 
-  - description: Build a Docker image with an explicit tag
+  - description: Build a Docker image with an explicit version tag
     input: build <service> <tag>
     output: docker build -t {{service | lower}}:{{tag}} .
 
   - description: Run a service container interactively
     input: run <service> [...rest]
-    output: docker run --rm {{rest}} {{service | lower}}
+    output: docker run --rm --name {{service | lower}} {{rest}} {{service | lower}}
 
   - description: Push a versioned image to the registry
     input: push <service> <tag>

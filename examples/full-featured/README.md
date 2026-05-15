@@ -44,7 +44,7 @@ A single example that exercises every dooz capability:
 |---|---|
 | `dooz tag UI` | `echo ui` |
 | `dooz slug My New Feature` | `echo my-new-feature` |
-| `dooz flags app --watch --coverage` | `echo "app -> --watch | --coverage"` |
+| `dooz flags app --watch --coverage` | `echo app -> --watch | --coverage` |
 | `dooz json a b c` | `echo ["a","b","c"]` |
 
 ### Deployment
@@ -55,8 +55,8 @@ A single example that exercises every dooz capability:
 | `dooz deploy production api` | `./scripts/deploy.sh production api` |
 | `dooz deploy nowhere web` | ❌ rejected by `environmentExists` |
 | `dooz deploy staging unknown` | ❌ rejected by `serviceExists` |
-| `dooz info staging` | `echo "Region: us-east-1, Cluster: staging-cluster"` |
-| `dooz info production` | `echo "Region: us-west-2, Cluster: prod-cluster"` |
+| `dooz info staging` | `echo Region: us-east-1 Cluster: staging-cluster` |
+| `dooz info production` | `echo Region: us-west-2 Cluster: prod-cluster` |
 
 ---
 
@@ -66,7 +66,7 @@ A single example that exercises every dooz capability:
 - **`environmentInfo` resolver** — reads `environment`, returns `region` and `cluster` for use in the template.
 - **Three validators** — `packageExists`, `environmentExists`, `serviceExists` each have a clear `description` used as the failure message.
 - **`kebab` custom filter** — converts space-separated words to a lowercase hyphenated slug.
-- **`truncate` custom filter** — shortens a value to a max character count and appends `…`; takes a numeric argument: `{{name | truncate(10)}}`.
+- **`truncate` custom filter** — shortens a value to a max character count and appends `...`; takes a numeric argument: `{{name | truncate(10)}}`.
 - **Specificity ranking** — `test all [...rest]` is ranked higher than `test <name> [...rest]` because `all` is a literal token, so it always wins for that exact input.
 
 ---

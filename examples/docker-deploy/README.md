@@ -11,8 +11,9 @@ The built-in `lower` filter normalises service names so `Web`, `web`, and `WEB` 
 | Input | Runs |
 |---|---|
 | `dooz build api` | `docker build -t api .` |
-| `dooz build api 1.4.2` | `docker build -t api:1.4.2 .` |
-| `dooz run api -p 8080:8080` | `docker run --rm -p 8080:8080 api` |
+| `dooz build api --no-cache` | `docker build -t api . --no-cache` |
+| `dooz build api 1.4.2` | `docker build -t api:1.4.2 .` *(more specific pattern wins)* |
+| `dooz run api -p 8080:8080` | `docker run --rm --name api -p 8080:8080 api` |
 | `dooz push api 1.4.2` | `docker push api:1.4.2` |
 | `dooz push api latest` | ❌ rejected by validator |
 | `dooz logs api --tail 50` | `docker logs api --tail 50` |
@@ -27,7 +28,8 @@ The built-in `lower` filter normalises service names so `Web`, `web`, and `WEB` 
 ## Features shown
 
 - **Built-in `lower` filter** — `{{service | lower}}` normalises casing without any extension code.
-- **Specificity ranking** — `build <service> <tag>` wins over `build <service>` when two tokens follow `build`.
+- **Specificity ranking** — both `build <service> [...rest]` and `build <service> <tag>` can match `dooz build api 1.4.2`; the two-capture pattern wins because a named capture is more specific than a variadic.
+- **Container naming** — `run` sets `--name {{service | lower}}` so that `logs` and `stop` can reference the same container name.
 - **Validator** — `tagIsNotLatest` in `dooz.js` prevents a destructive `push api latest` from ever reaching the registry.
 - **Passthrough flags** — `run`, `logs`, and `up` forward extra tokens (ports, `--tail`, `-d`, etc.) unchanged.
 
