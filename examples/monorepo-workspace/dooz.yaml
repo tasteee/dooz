@@ -1,0 +1,42 @@
+commands:
+  - description: Install all workspace dependencies
+    input: install
+    output: pnpm install
+
+  - description: Build every package in the workspace
+    input: build all [...rest]
+    output: pnpm -r run build {{rest}}
+
+  - description: Build one package
+    input: build <name> [...rest]
+    output: pnpm --filter @scope/{{name}} run build {{rest}}
+    validates: [packageExists]
+
+  - description: Test every package in the workspace
+    input: test all [...rest]
+    output: pnpm -r run test {{rest}}
+
+  - description: Test one package
+    input: test <name> [...rest]
+    output: pnpm --filter @scope/{{name}} run test {{rest}}
+    validates: [packageExists]
+
+  - description: Lint one package
+    input: lint <name>
+    output: pnpm --filter @scope/{{name}} run lint
+    validates: [packageExists]
+
+  - description: Add a dependency to a package
+    input: add <name> <dep>
+    output: pnpm --filter @scope/{{name}} add {{dep}}
+    validates: [packageExists]
+
+  - description: Remove a dependency from a package
+    input: remove <name> <dep>
+    output: pnpm --filter @scope/{{name}} remove {{dep}}
+    validates: [packageExists]
+
+  - description: Run any script inside a package
+    input: run <name> <script> [...rest]
+    output: pnpm --filter @scope/{{name}} run {{script}} {{rest}}
+    validates: [packageExists]

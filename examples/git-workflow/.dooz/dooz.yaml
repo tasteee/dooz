@@ -1,0 +1,46 @@
+commands:
+  - description: Create a feature branch from the current HEAD
+    input: feature <name>
+    output: git checkout -b feature/{{name | kebab}}
+
+  - description: Create a bugfix branch from the current HEAD
+    input: fix <name>
+    output: git checkout -b fix/{{name | kebab}}
+
+  - description: Create a release branch
+    input: release <version>
+    output: git checkout -b release/{{version}}
+    validates: [isSemanticVersion]
+
+  - description: Commit staged changes with a message
+    input: commit <message>
+    output: git commit -m {{message}}
+
+  - description: Push the current branch to origin
+    input: push [...rest]
+    output: git push origin HEAD {{rest}}
+
+  - description: Pull with rebase from origin
+    input: pull [...rest]
+    output: git pull --rebase origin HEAD {{rest}}
+
+  - description: Tag the current commit as a release
+    input: tag <version>
+    output: git tag v{{version}}
+    validates: [isSemanticVersion]
+
+  - description: Push tags to origin
+    input: push tags
+    output: git push origin --tags
+
+  - description: Stash uncommitted changes
+    input: stash [...rest]
+    output: git stash {{rest}}
+
+  - description: Rebase the current branch onto origin/main
+    input: rebase
+    output: git rebase origin/main
+
+  - description: Show a compact one-line log
+    input: log [...rest]
+    output: git log --oneline {{rest}}

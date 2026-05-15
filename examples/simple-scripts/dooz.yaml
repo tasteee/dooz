@@ -1,0 +1,28 @@
+commands:
+  - description: Start the development server
+    input: start
+    output: npm run dev
+
+  - description: Build the project for production
+    input: build [...rest]
+    output: npm run build {{rest}}
+
+  - description: Run the test suite
+    input: test [...rest]
+    output: npm test {{rest}}
+
+  - description: Run the linter across all source files
+    input: lint
+    output: eslint src --ext .ts,.tsx
+
+  - description: Format all source files with Prettier
+    input: format
+    output: prettier --write src
+
+  - description: Type-check the project without emitting
+    input: typecheck
+    output: tsc --noEmit
+
+  - description: Remove build output
+    input: clean
+    output: rm -rf dist
