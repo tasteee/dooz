@@ -13,7 +13,8 @@ const packageKind = {
   provides: ['kind'],
   resolve: async (context) => {
     const packageName = String(context.args.name)
-    const kind = packageName === 'core' ? 'run' : 'exec'
+    const isCorePackage = packageName === 'core'
+    const kind = isCorePackage ? 'run' : 'exec'
     return { kind }
   },
 }
@@ -30,7 +31,8 @@ const environmentInfo = {
       production: { region: 'us-west-2', cluster: 'prod-cluster' },
       preview: { region: 'us-east-1', cluster: 'preview-cluster' },
     }
-    const resolvedMetadata = environmentMetadata[environment] ?? { region: 'unknown', cluster: 'unknown' }
+    const fallbackMetadata = { region: 'unknown', cluster: 'unknown' }
+    const resolvedMetadata = environmentMetadata[environment] ?? fallbackMetadata
     return resolvedMetadata
   },
 }
@@ -42,7 +44,9 @@ const packageExists = {
   description: 'Package must be one of: ' + KNOWN_PACKAGES.join(', '),
   requires: ['name'],
   validate: async (context) => {
-    return KNOWN_PACKAGES.includes(String(context.args.name))
+    const packageName = String(context.args.name)
+    const isKnownPackage = KNOWN_PACKAGES.includes(packageName)
+    return isKnownPackage
   },
 }
 
@@ -51,7 +55,9 @@ const environmentExists = {
   description: 'Environment must be one of: ' + KNOWN_ENVIRONMENTS.join(', '),
   requires: ['environment'],
   validate: async (context) => {
-    return KNOWN_ENVIRONMENTS.includes(String(context.args.environment))
+    const environment = String(context.args.environment)
+    const isKnownEnvironment = KNOWN_ENVIRONMENTS.includes(environment)
+    return isKnownEnvironment
   },
 }
 
@@ -60,7 +66,9 @@ const serviceExists = {
   description: 'Service must be one of: ' + KNOWN_SERVICES.join(', '),
   requires: ['service'],
   validate: async (context) => {
-    return KNOWN_SERVICES.includes(String(context.args.service))
+    const service = String(context.args.service)
+    const isKnownService = KNOWN_SERVICES.includes(service)
+    return isKnownService
   },
 }
 
@@ -69,7 +77,10 @@ const serviceExists = {
 const kebab = {
   name: 'kebab',
   apply: (value) => {
-    return String(value).toLowerCase().replaceAll(' ', '-')
+    const stringValue = String(value)
+    const lowercased = stringValue.toLowerCase()
+    const kebabValue = lowercased.replaceAll(' ', '-')
+    return kebabValue
   },
 }
 
@@ -80,7 +91,8 @@ const truncate = {
     const maxLength = Number(length) || 20
     const isTooLong = stringValue.length > maxLength
     if (!isTooLong) return stringValue
-    return stringValue.slice(0, maxLength) + '...'
+    const truncatedValue = stringValue.slice(0, maxLength) + '...'
+    return truncatedValue
   },
 }
 

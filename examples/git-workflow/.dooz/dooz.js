@@ -1,7 +1,10 @@
 const kebab = {
   name: 'kebab',
   apply: (value) => {
-    return String(value).toLowerCase().replaceAll(' ', '-')
+    const stringValue = String(value)
+    const lowercased = stringValue.toLowerCase()
+    const kebabValue = lowercased.replaceAll(' ', '-')
+    return kebabValue
   },
 }
 
@@ -11,7 +14,9 @@ const isSemanticVersion = {
   requires: ['version'],
   validate: async (context) => {
     const semverPattern = /^\d+\.\d+\.\d+$/
-    return semverPattern.test(String(context.args.version))
+    const version = String(context.args.version)
+    const isValidSemver = semverPattern.test(version)
+    return isValidSemver
   },
 }
 

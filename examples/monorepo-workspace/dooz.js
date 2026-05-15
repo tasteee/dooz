@@ -5,7 +5,9 @@ const packageExists = {
   description: 'Package must exist in the workspace',
   requires: ['name'],
   validate: async (context) => {
-    return KNOWN_PACKAGES.includes(String(context.args.name))
+    const packageName = String(context.args.name)
+    const isKnownPackage = KNOWN_PACKAGES.includes(packageName)
+    return isKnownPackage
   },
 }
 
