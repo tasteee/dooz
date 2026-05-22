@@ -1,0 +1,52 @@
+commands:
+  # ── Tests ───────────────────────────────────────────────────────────────────
+  - description: Test every package (more specific literal match)
+    input: test all [...rest]
+    output: pnpm test {{rest}}
+
+  - description: Test one package with kind-aware execution
+    input: test <name> [...rest]
+    output: pnpm --filter {{name}} {{kind}} test {{rest}}
+    uses: [packageKind]
+    validates: [packageExists]
+
+  # ── Builds ──────────────────────────────────────────────────────────────────
+  - description: Build one package
+    input: build <name> [...rest]
+    output: pnpm --filter {{name}} run build {{rest}}
+    validates: [packageExists]
+
+  # ── Scripts ─────────────────────────────────────────────────────────────────
+  - description: Run any named script in a package
+    input: run <name> <script> [...rest]
+    output: pnpm --filter {{name}} run {{script}} {{rest}}
+    validates: [packageExists]
+
+  # ── Filter demos ────────────────────────────────────────────────────────────
+  - description: Echo a lowercased tag for a package name
+    input: tag <name>
+    output: echo {{name | lower}}
+
+  - description: Echo a kebab-cased slug from a name
+    input: slug <name>
+    output: echo {{name | kebab}}
+
+  - description: Print extra args joined with a separator
+    input: flags <name> [...rest]
+    output: echo {{name}} -> {{rest | join(' | ')}}
+
+  - description: Print extra args as a JSON array
+    input: json [...rest]
+    output: echo {{rest | json}}
+
+  # ── Deployment ──────────────────────────────────────────────────────────────
+  - description: Deploy a service to an environment
+    input: deploy <environment> <service>
+    output: ./scripts/deploy.sh {{environment}} {{service | lower}}
+    validates: [environmentExists, serviceExists]
+
+  - description: Print deployment metadata for an environment
+    input: info <environment>
+    output: echo Region: {{region}} Cluster: {{cluster}}
+    uses: [environmentInfo]
+    validates: [environmentExists]

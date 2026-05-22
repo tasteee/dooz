@@ -1,0 +1,41 @@
+commands:
+  - description: Build a Docker image for a service, with optional extra flags
+    input: build <service> [...rest]
+    output: docker build -t {{service | lower}} . {{rest}}
+
+  - description: Build a Docker image with an explicit version tag
+    input: build <service> <tag>
+    output: docker build -t {{service | lower}}:{{tag}} .
+
+  - description: Run a service container interactively
+    input: run <service> [...rest]
+    output: docker run --rm --name {{service | lower}} {{rest}} {{service | lower}}
+
+  - description: Push a versioned image to the registry
+    input: push <service> <tag>
+    output: docker push {{service | lower}}:{{tag}}
+    validates: [tagIsNotLatest]
+
+  - description: View logs for a running container
+    input: logs <service> [...rest]
+    output: docker logs {{service}} {{rest}}
+
+  - description: Stop a named running container
+    input: stop <service>
+    output: docker stop {{service}}
+
+  - description: Pull the latest image for a service
+    input: pull <service>
+    output: docker pull {{service | lower}}:latest
+
+  - description: Start all services defined in compose
+    input: up [...rest]
+    output: docker compose up {{rest}}
+
+  - description: Stop all running compose services
+    input: down
+    output: docker compose down
+
+  - description: Show status of compose services
+    input: status
+    output: docker compose ps
